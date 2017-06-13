@@ -21,7 +21,17 @@ function handleInit (err) {
 }
 
 function saveJournalEntry() {
-    console.log("Save successful");
-    let status = document.getElementById("status");
-    status.textContent = "Save successful";
+    let journalEntry = document.getElementById("journalEntry");
+    journalEntry = journalEntry.value;
+    node.files.add(new node.types.Buffer(journalEntry), function (err, res) {
+      if (err || !res) {
+        return console.error('Error - ipfs files add', err, res)
+      }
+
+      res.forEach(function(file) {        
+        console.log("successfully stored", file);
+        let status = document.getElementById("status");
+        status.textContent = "Save successful: " + file.hash;
+      })
+    })    
 }
